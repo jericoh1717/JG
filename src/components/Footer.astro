@@ -1,0 +1,54 @@
+
+---
+import { sitio } from "../datos/sitio.js";
+---
+
+<footer class="footer">
+  <div class="footer-main">
+    <div class="footer-brand">
+      <a href="/" class="logo">JG<span>.</span></a>
+      <p>Tu estilo. Tu presencia.</p>
+    </div>
+
+    <div class="footer-navigation">
+      <span class="footer-label">EXPLORA</span>
+      <a href="/">Inicio</a>
+      <a href="/nosotros">Nosotros</a>
+      <a href="/coleccion">Colección</a>
+      <a href="/contacto">Contacto</a>
+    </div>
+
+    <div class="footer-social">
+      <span class="footer-label">SÍGUENOS</span>
+
+      <a
+        href={sitio.redesSociales.instagram}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Instagram ↗
+      </a>
+
+      <a
+        href={sitio.redesSociales.tiktok}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        TikTok ↗
+      </a>
+
+      <a
+        href={`mailto:${sitio.contacto.correo}`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Correo ↗
+      </a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>© 2026 JG. Todos los derechos reservados.</span>
+    <span>DISEÑADO PARA DESTACAR.</span>
+  </div>
+</footer>

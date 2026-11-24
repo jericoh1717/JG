@@ -1,0 +1,123 @@
+
+<section class="about section" id="nosotros">
+  <div class="section-label">01 — NUESTRA ESENCIA / JG</div>
+
+  <div class="about-grid">
+    <div class="about-heading">
+      <span class="eyebrow">NO SOMOS UNA TENDENCIA</span>
+
+      <h2>
+        TU IDENTIDAD.<br />
+        TUS REGLAS.<br />
+        <span>TU PRESENCIA.</span>
+      </h2>
+    </div>
+
+    <div class="about-description">
+      <p>
+        JG nace de una idea: el estilo no consiste en seguir lo que
+        todos hacen, sino en encontrar aquello que te representa.
+      </p>
+
+      <p>
+        Combinamos joyería y moda para crear una identidad que va
+        más allá de lo convencional. Creemos en la versatilidad
+        para adaptarse, la presencia para destacar y la innovación
+        para romper esquemas.
+      </p>
+
+      <a href="/nosotros" class="text-link">
+        CONOCE NUESTRA HISTORIA ↗
+      </a>
+    </div>
+  </div>
+
+  <!-- IMAGEN DE IDENTIDAD JG -->
+  <div class="about-image">
+    <img
+      src="/images/nosotros.jpeg"
+      alt="Identidad y estilo de la marca JG"
+      loading="lazy"
+    />
+
+    <div class="about-image-overlay">
+      <span>JG — BEYOND THE ORDINARY</span>
+      <span>DEFINE YOUR PRESENCE.</span>
+    </div>
+  </div>
+
+  <!-- VALORES DE LA MARCA -->
+  <div class="about-values">
+    <article>
+      <span>01</span>
+      <h3>VERSATILIDAD</h3>
+      <p>Un estilo que evoluciona contigo.</p>
+    </article>
+
+    <article>
+      <span>02</span>
+      <h3>PRESENCIA</h3>
+      <p>Detalles que hablan por sí solos.</p>
+    </article>
+
+    <article>
+      <span>03</span>
+      <h3>INNOVACIÓN</h3>
+      <p>Una manera diferente de expresarte.</p>
+    </article>
+  </div>
+</section>
+
+<style>
+  .about-image {
+    position: relative;
+    width: 100%;
+    height: 450px;
+    margin: 60px 0;
+    overflow: hidden;
+    background: #171717;
+  }
+
+  .about-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.7s ease;
+  }
+
+  .about-image:hover img {
+    transform: scale(1.04);
+  }
+
+  .about-image-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 25px 30px;
+    color: white;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.65),
+      transparent 65%
+    );
+  }
+
+  .about-image-overlay span {
+    font-size: 11px;
+    letter-spacing: 3px;
+  }
+
+  @media (max-width: 768px) {
+    .about-image {
+      height: 280px;
+      margin: 40px 0;
+    }
+
+    .about-image-overlay {
+      padding: 18px;
+    }
+  }
+</style>

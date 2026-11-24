@@ -1,0 +1,93 @@
+
+<section class="catalogo">
+  <div class="catalogo-header">
+    <span class="etiqueta">JG — NUESTRA SELECCIÓN</span>
+    <h1>La colección.</h1>
+    <p>Piezas que definen tu estilo y resaltan tu presencia.</p>
+  </div>
+
+  <div class="productos">
+    <a href="/relojes" class="producto">
+      <img src="/images/portada reloj.jpeg" alt="Relojes JG" />
+      <div class="producto-info">
+        <span>ACCESORIOS</span>
+        <h2>Relojes ↗</h2>
+        <p>Detalles que marcan la diferencia.</p>
+      </div>
+    </a>
+
+    <a href="/cadenas" class="producto">
+      <img src="/images/portada cadena.jpeg" alt="Cadenas JG" />
+      <div class="producto-info">
+        <span>JOYERÍA</span>
+        <h2>Cadenas ↗</h2>
+        <p>Presencia en cada detalle.</p>
+      </div>
+    </a>
+
+    <a href="/gafas" class="producto">
+      <img src="/images/portada gafas.jpeg" alt="Gafas JG" />
+      <div class="producto-info">
+        <span>MODA</span>
+        <h2>Gafas ↗</h2>
+        <p>Una forma diferente de destacar.</p>
+      </div>
+    </a>
+
+    <a href="/pulseras" class="producto">
+      <img src="/images/portada pulsera.jpeg" alt="Pulseras JG" />
+      <div class="producto-info">
+        <span>JOYERÍA</span>
+        <h2>Pulseras ↗</h2>
+        <p>Tu estilo, hasta en los pequeños detalles.</p>
+      </div>
+    </a>
+  </div>
+</section>
+
+<style>
+  .catalogo {
+    padding: 100px 8%;
+    background: #090909;
+    color: white;
+    min-height: 80vh;
+  }
+
+  .catalogo-header { margin-bottom: 55px; }
+  .etiqueta { color: #999; font-size: 12px; letter-spacing: 4px; }
+  .catalogo-header h1 { font-size: clamp(45px, 7vw, 85px); margin: 15px 0; }
+  .catalogo-header p { color: #aaa; }
+
+  .productos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 35px;
+  }
+
+  .producto {
+    display: block;
+    background: #141414;
+    color: white;
+    text-decoration: none;
+    overflow: hidden;
+  }
+
+  .producto img {
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+    display: block;
+    transition: transform .4s;
+  }
+
+  .producto:hover img { transform: scale(1.04); }
+  .producto-info { padding: 25px; }
+  .producto-info span { color: #999; font-size: 10px; letter-spacing: 3px; }
+  .producto-info h2 { font-size: 27px; margin: 10px 0; }
+  .producto-info p { color: #aaa; }
+
+  @media (max-width: 650px) {
+    .productos { grid-template-columns: 1fr; }
+    .producto img { height: 300px; }
+  }
+</style>

@@ -1,0 +1,59 @@
+
+---
+import { sitio } from "../datos/sitio.js";
+---
+
+<section class="contact section" id="contacto">
+  <div class="contact-content">
+    <span class="section-label">04 — CONECTA CON JG / 2026</span>
+
+    <span class="contact-eyebrow">TU IDENTIDAD NO TIENE LÍMITES</span>
+
+    <h2>
+      NO PASES<br />
+      DESAPERCIBIDO.<br />
+      <span>DEJA TU MARCA.</span>
+    </h2>
+
+    <p>
+      El estilo es una forma de expresión. Descubre JG, encuentra
+      inspiración y forma parte de una comunidad que entiende
+      que ser diferente es parte de su identidad.
+    </p>
+
+    <div class="contact-actions">
+      <a
+        href={sitio.redesSociales.instagram}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="button-primary"
+      >
+        INSTAGRAM ↗
+      </a>
+
+      <a
+        href={sitio.redesSociales.tiktok}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="button-secondary"
+      >
+        TIKTOK ↗
+      </a>
+
+      <a
+        href={`mailto:${sitio.contacto.correo}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="button-secondary"
+      >
+        ESCRÍBENOS ↗
+      </a>
+
+      <a href="/coleccion" class="button-secondary">
+        EXPLORAR JG
+      </a>
+    </div>
+
+    <span class="contact-signature">JG — TU ESTILO. TU PRESENCIA.</span>
+  </div>
+</section>

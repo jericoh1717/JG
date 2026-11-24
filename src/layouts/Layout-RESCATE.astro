@@ -1,0 +1,137 @@
+﻿---
+import "../styles/global.css";
+
+const {
+  title = "JG | NO SIGAS TENDENCIAS. CRÉALAS.",
+  description = "JG: joyería y moda para expresar tu estilo, personalidad y presencia."
+} = Astro.props;
+
+const canonicalURL = new URL(
+  Astro.url.pathname,
+  Astro.site ?? Astro.url.origin
+);
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonicalURL} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/icon-48.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:locale" content="es_EC" />
+
+    <meta name="theme-color" content="#08080B" />
+
+    <title>{title}</title>
+  </head>
+
+  <body>
+    <slot />
+  
+<!-- JG-CURSOR-PERSONALIZADO -->
+<style>
+  @media (pointer: fine) {
+    html.jg-cursor-ready,
+    html.jg-cursor-ready body,
+    html.jg-cursor-ready a,
+    html.jg-cursor-ready button,
+    html.jg-cursor-ready input,
+    html.jg-cursor-ready textarea,
+    html.jg-cursor-ready select {
+      cursor: none !important;
+    }
+  })();
+</script>
+
+    #jg-cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 12px;
+      height: 12px;
+      border: 2px solid #A58AFF;
+      border-radius: 50%;
+      background: rgba(128, 85, 255, .25);
+      pointer-events: none;
+      z-index: 2147483647;
+      transform: translate(-50%, -50%);
+      transition: width .2s, height .2s, background .2s;
+    }
+  })();
+</script>
+
+    #jg-cursor.active {
+      width: 28px;
+      height: 28px;
+      background: rgba(128, 85, 255, .35);
+    }
+  })();
+</script>
+  }
+
+  @media (pointer: coarse) {
+    #jg-cursor { display: none; }
+  }
+</style>
+
+<script>
+  (() => {
+    function iniciarCursorJG() {
+      if (!window.matchMedia("(pointer: fine)").matches) return;
+
+      let cursor = document.getElementById("jg-cursor");
+
+      if (!cursor) {
+        cursor = document.createElement("div");
+        cursor.id = "jg-cursor";
+        document.body.appendChild(cursor);
+      }
+  })();
+</script>
+
+      document.documentElement.classList.add("jg-cursor-ready");
+
+      document.addEventListener("pointermove", (event) => {
+        cursor.style.left = `${event.clientX}px`;
+        cursor.style.top = `${event.clientY}px`;
+      }
+  })();
+</script>);
+
+      document.addEventListener("pointerover", (event) => {
+        const interactivo = event.target.closest("a, button, input, textarea, select");
+        cursor.classList.toggle("active", Boolean(interactivo));
+      }
+  })();
+</script>);
+    }
+  })();
+</script>
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", iniciarCursorJG);
+    }
+  })();
+</script> else {
+      iniciarCursorJG();
+    }
+  })();
+</script>
+  })();
+</script>
+</body>
+</html>
+
+
+

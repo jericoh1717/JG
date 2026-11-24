@@ -1,0 +1,121 @@
+
+---
+import { sitio } from "../datos/sitio";
+---
+
+<header class="header">
+  <a href="/" class="logo" aria-label={`${sitio.nombre} - Inicio`}>
+    {sitio.nombre}<span>.</span>
+  </a>
+
+  <nav class="navigation" aria-label="Navegación principal">
+    {sitio.navegacion.map((link) => (
+      <a
+        href={link.ruta}
+        class:list={[
+          "nav-link",
+          { "nav-contact": link.nombre === "Contacto" }
+        ]}
+      >
+        {link.nombre}
+        {link.nombre === "Contacto" && <span>↗</span>}
+      </a>
+    ))}
+  </nav>
+</header>
+
+<script>
+  import { obtenerCarrito } from "../scripts/carrito.js";
+
+  const iniciarAccesoCarrito = () => {
+    if (document.querySelector(".jg-carrito-flotante")) return;
+
+    const boton = document.createElement("a");
+    boton.href = "/carrito";
+    boton.className = "jg-carrito-flotante";
+    boton.setAttribute("aria-label", "Ver mi carrito");
+
+    boton.innerHTML = `
+      <span class="jg-carrito-icono">🛒</span>
+      <span class="jg-carrito-texto">MI CARRITO</span>
+      <span class="jg-carrito-contador">0</span>
+    `;
+
+    document.body.appendChild(boton);
+
+    const actualizar = () => {
+      const productos = obtenerCarrito();
+      const cantidad = productos.reduce(
+        (suma, producto) => suma + (Number(producto.cantidad) || 1),
+        0
+      );
+
+      boton.querySelector(".jg-carrito-contador").textContent = cantidad;
+    };
+
+    actualizar();
+    window.addEventListener("jg-carrito-actualizado", actualizar);
+    window.addEventListener("storage", actualizar);
+
+    const estilo = document.createElement("style");
+    estilo.textContent = `
+      .jg-carrito-flotante {
+        position: fixed;
+        right: 25px;
+        bottom: 25px;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 15px 20px;
+        background: #8055FF;
+        color: white;
+        border: 1px solid #A58AFF;
+        text-decoration: none;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        box-shadow: 0 8px 30px rgba(0,0,0,.4);
+        transition: background .3s, transform .3s;
+      }
+
+      .jg-carrito-flotante:hover {
+        background: #6840D9;
+        transform: translateY(-4px);
+      }
+
+      .jg-carrito-icono {
+        font-size: 19px;
+      }
+
+      .jg-carrito-contador {
+        display: grid;
+        place-items: center;
+        min-width: 23px;
+        height: 23px;
+        padding: 0 5px;
+        border-radius: 50px;
+        background: #08080B;
+        color: white;
+        font-size: 11px;
+      }
+
+      @media(max-width:550px) {
+        .jg-carrito-flotante {
+          right: 15px;
+          bottom: 15px;
+          padding: 13px 16px;
+        }
+      }
+    `;
+
+    document.head.appendChild(estilo);
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", iniciarAccesoCarrito);
+  } else {
+    iniciarAccesoCarrito();
+  }
+</script>
+<!-- JG-ACCESO-CARRITO -->

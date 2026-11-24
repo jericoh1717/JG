@@ -1,0 +1,415 @@
+﻿---
+const { titulo, descripcion, productos = [] } = Astro.props;
+
+const crearId = (nombre) =>
+  nombre
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+---
+
+<section class="categoria">
+  <div class="contenedor">
+
+    <div class="encabezado">
+      <span class="etiqueta">JG — COLECCIÓN EXCLUSIVA</span>
+      <h1>{titulo}</h1>
+      <p>{descripcion}</p>
+
+      <a href="/coleccion" class="volver">
+        ← VOLVER A LA COLECCIÓN
+      </a>
+    </div>
+
+    <div class="productos">
+      {productos.map((producto) => (
+        <article class="producto">
+
+          <a
+            href={`/pedido?producto=${encodeURIComponent(producto.nombre)}`}
+            class="imagen-producto"
+            aria-label={`Ver ${producto.nombre}`}
+          >
+            <img
+              src={producto.imagen}
+              alt={`${producto.nombre} - JG`}
+              loading="lazy"
+              decoding="async"
+            />
+            <span class="ver-producto">VER PRODUCTO ↗</span>
+          </a>
+
+          <div class="informacion">
+            <span class="tipo">{producto.tipo}</span>
+            <h2>{producto.nombre}</h2>
+            <p>{producto.descripcion}</p>
+            <div class="precio-producto">${producto.precio?.toFixed(2)} USD</div>
+
+            <div class="acciones-producto">
+              <button
+                type="button"
+                class="boton-carrito"
+                data-id={crearId(`${producto.tipo}-${producto.nombre}`)}
+                data-nombre={producto.nombre}
+                data-tipo={producto.tipo}
+                data-descripcion={producto.descripcion}
+                data-imagen={producto.imagen}
+                data-precio={producto.precio}
+              >
+                <span>+</span> AGREGAR AL CARRITO
+              </button>
+
+              <a
+                href={`/pedido?producto=${encodeURIComponent(producto.nombre)}`}
+                class="boton-pedido"
+              >
+                SOLICITAR PRODUCTO <span>↗</span>
+              </a>
+            </div>
+          </div>
+
+        </article>
+      ))}
+    </div>
+
+    <div class="pie-categoria">
+      <span>JG · ECUADOR · 2026</span>
+      <p>NO SIGAS TENDENCIAS. CRÉALAS.</p>
+    </div>
+
+    <div id="aviso-carrito" class="aviso-carrito" role="status" aria-live="polite"></div>
+
+  </div>
+</section>
+
+<script>
+  import { agregarAlCarrito } from "../scripts/carrito.js";
+
+  document.querySelectorAll(".boton-carrito").forEach((boton) => {
+    boton.addEventListener("click", () => {
+      agregarAlCarrito({
+        id: boton.dataset.id,
+        nombre: boton.dataset.nombre,
+        tipo: boton.dataset.tipo,
+        descripcion: boton.dataset.descripcion,
+        imagen: boton.dataset.imagen,
+        precio: Number(boton.dataset.precio)
+      });
+
+      const aviso = document.querySelector("#aviso-carrito");
+
+      if (aviso) {
+        aviso.textContent = `${boton.dataset.nombre} se agregó al carrito.`;
+        aviso.classList.add("visible");
+
+        window.setTimeout(() => {
+          aviso.classList.remove("visible");
+        }, 2500);
+      }
+
+      const textoOriginal = boton.innerHTML;
+      boton.innerHTML = "<span>✓</span> AGREGADO";
+      boton.classList.add("agregado");
+
+      window.setTimeout(() => {
+        boton.innerHTML = textoOriginal;
+        boton.classList.remove("agregado");
+      }, 1500);
+    });
+  });
+</script>
+
+<style>
+  .categoria {
+    background: #08080B;
+    color: #fff;
+    min-height: 80vh;
+    padding: 90px 6% 60px;
+  }
+
+  .contenedor {
+    max-width: 1250px;
+    margin: 0 auto;
+  }
+
+  .encabezado {
+    text-align: center;
+    margin-bottom: 65px;
+  }
+
+  .etiqueta {
+    color: #A58AFF;
+    font-size: 11px;
+    letter-spacing: 4px;
+    font-weight: 700;
+  }
+
+  .encabezado h1 {
+    font-size: clamp(42px, 7vw, 76px);
+    font-weight: 800;
+    letter-spacing: -3px;
+    margin: 18px 0;
+  }
+
+  .encabezado p {
+    color: #aaa;
+    font-size: 16px;
+    margin-bottom: 25px;
+  }
+
+  .volver {
+    color: #A58AFF;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-decoration: none;
+    transition: color .3s;
+  }
+
+  .volver:hover {
+    color: white;
+  }
+
+  .productos {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+  }
+
+  .producto {
+    background: #111117;
+    border: 1px solid #25232D;
+    overflow: hidden;
+    transition: transform .3s, border-color .3s;
+  }
+
+  .producto:hover {
+    transform: translateY(-7px);
+    border-color: #8055FF;
+  }
+
+  .imagen-producto {
+    display: block;
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: #17171D;
+  }
+
+  .imagen-producto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform .5s;
+  }
+
+  .producto:hover .imagen-producto img {
+    transform: scale(1.06);
+  }
+
+  .ver-producto {
+    position: absolute;
+    bottom: 18px;
+    left: 18px;
+    background: rgba(8, 8, 11, .85);
+    color: white;
+    padding: 10px 14px;
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+
+  .informacion {
+    padding: 24px;
+  }
+
+  .tipo {
+    color: #A58AFF;
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+
+  .informacion h2 {
+    font-size: 23px;
+    margin: 12px 0 8px;
+  }
+
+  .precio-producto {
+    color: #A58AFF;
+    font-size: 21px;
+    font-weight: 800;
+    margin-top: 16px;
+    letter-spacing: .5px;
+  }
+
+  .informacion p {
+    color: #999;
+    font-size: 13px;
+    line-height: 1.6;
+    min-height: 42px;
+  }
+
+  .acciones-producto {
+    margin-top: 22px;
+    border-top: 1px solid #302D39;
+  }
+
+  .boton-carrito {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 9px;
+    padding: 15px 8px;
+    background: #8055FF;
+    border: 1px solid #8055FF;
+    color: white;
+    font-family: inherit;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: background .3s, border-color .3s;
+  }
+
+  .boton-carrito:hover {
+    background: #6840D9;
+    border-color: #A58AFF;
+  }
+
+  .boton-carrito span {
+    font-size: 18px;
+  }
+
+  .boton-carrito.agregado {
+    background: #24202F;
+    border-color: #A58AFF;
+    color: #C9B8FF;
+  }
+
+  .boton-pedido {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    color: white;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-decoration: none;
+    transition: color .3s;
+  }
+
+  .boton-pedido:hover {
+    color: #A58AFF;
+  }
+
+  .boton-pedido span {
+    font-size: 17px;
+  }
+
+  .volver:focus-visible,
+  .boton-pedido:focus-visible,
+  .imagen-producto:focus-visible,
+  .boton-carrito:focus-visible {
+    outline: 2px solid #A58AFF;
+    outline-offset: 5px;
+  }
+
+  .aviso-carrito {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    z-index: 100;
+    background: #17131F;
+    color: white;
+    border: 1px solid #8055FF;
+    padding: 15px 22px;
+    font-size: 13px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: .25s;
+  }
+
+  .aviso-carrito.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .pie-categoria {
+    margin-top: 85px;
+    padding-top: 25px;
+    border-top: 1px solid #25232D;
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+
+  .pie-categoria span {
+    color: #777;
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+
+  .pie-categoria p {
+    color: #A58AFF;
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+
+  @media (max-width: 850px) {
+    .productos {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 550px) {
+    .categoria {
+      padding: 65px 5% 40px;
+    }
+
+    .productos {
+      grid-template-columns: 1fr;
+      gap: 25px;
+    }
+
+    .encabezado {
+      margin-bottom: 40px;
+    }
+
+    .encabezado h1 {
+      letter-spacing: -2px;
+    }
+
+    .pie-categoria {
+      flex-direction: column;
+    }
+
+    .aviso-carrito {
+      left: 15px;
+      right: 15px;
+      bottom: 15px;
+      text-align: center;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .producto,
+    .imagen-producto img,
+    .volver,
+    .boton-pedido,
+    .boton-carrito,
+    .aviso-carrito {
+      transition: none;
+    }
+
+    .producto:hover,
+    .producto:hover .imagen-producto img {
+      transform: none;
+    }
+  }
+</style>
+

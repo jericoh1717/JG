@@ -1,0 +1,44 @@
+﻿
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import Categoria from "../components/Categoria.astro";
+
+const productos = [
+  {
+    nombre: "Classic Steel",
+    precio: 189,
+    tipo: "RELOJES",
+    descripcion: "Elegancia y diseño atemporal.",
+    imagen: "/images/reloj 1.jpeg"
+  },
+  {
+    nombre: "Urban Black",
+    tipo: "RELOJES",
+    precio: 229,
+    descripcion: "Un diseño moderno y minimalista.",
+    imagen: "/images/reloj 2.jpeg"
+  },
+  {
+    nombre: "Silver Edition",
+    precio: 249,
+    tipo: "RELOJES",
+    descripcion: "Un detalle que destaca.",
+    imagen: "/images/reloj 3.jpeg"
+  }
+];
+---
+
+<Layout title="Relojes | JG">
+  <Header />
+  <main>
+    <Categoria
+      titulo="Relojes"
+      descripcion="Tiempo, estilo y personalidad."
+      productos={productos}
+    />
+  </main>
+  <Footer />
+</Layout>
+

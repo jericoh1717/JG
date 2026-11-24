@@ -1,0 +1,389 @@
+
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+const producto = Astro.url.searchParams.get("producto") || "Producto JG";
+---
+
+<Layout title="Finalizar pedido | JG">
+  <Header />
+
+  <main class="pedido">
+    <div class="pedido-contenedor">
+      <div class="pedido-titulo">
+        <span class="eyebrow">JG — FINALIZAR COMPRA</span>
+        <h1>Tu próximo <span>estilo.</span></h1>
+        <p>Completa tus datos y prepara tu pedido.</p>
+      </div>
+
+      <form id="formPedido">
+        <section class="bloque">
+          <span class="numero">01</span>
+          <div class="bloque-contenido">
+            <h2>Tu producto</h2>
+            <div class="producto-seleccionado">
+              <span>PRODUCTO SELECCIONADO</span>
+              <h3>{producto}</h3>
+            </div>
+          </div>
+        </section>
+
+        <section class="bloque">
+          <span class="numero">02</span>
+          <div class="bloque-contenido">
+            <h2>Datos personales</h2>
+
+            <label for="nombre">Nombre completo</label>
+            <input id="nombre" type="text" name="nombre"
+              placeholder="Tu nombre y apellido" autocomplete="name" required />
+
+            <label for="telefono">Teléfono / WhatsApp</label>
+            <input id="telefono" type="tel" name="telefono"
+              placeholder="09XXXXXXXX" autocomplete="tel" required />
+
+            <label for="correo">Correo electrónico</label>
+            <input id="correo" type="email" name="correo"
+              placeholder="correo@ejemplo.com" autocomplete="email" required />
+          </div>
+        </section>
+
+        <section class="bloque">
+          <span class="numero">03</span>
+          <div class="bloque-contenido">
+            <h2>Dirección de entrega</h2>
+
+            <label for="ciudad">Provincia / Ciudad</label>
+            <input id="ciudad" type="text" name="ciudad"
+              placeholder="Ej. Quito, Pichincha" autocomplete="address-level2" required />
+
+            <label for="direccion">Dirección completa</label>
+            <input id="direccion" type="text" name="direccion"
+              placeholder="Calle principal, número y calle secundaria"
+              autocomplete="street-address" required />
+
+            <label for="referencia">Referencia para llegar</label>
+            <textarea id="referencia" name="referencia"
+              placeholder="Ej. Casa de dos pisos, junto a una tienda..."
+              rows="3"></textarea>
+          </div>
+        </section>
+
+        <section class="bloque">
+          <span class="numero">04</span>
+          <div class="bloque-contenido">
+            <h2>Método de pago</h2>
+
+            <label class="opcion">
+              <input type="radio" name="pago"
+                value="Efectivo contra entrega" required />
+              <span>
+                <strong>Efectivo contra entrega</strong>
+                <small>Paga cuando recibas tu pedido.</small>
+              </span>
+            </label>
+
+            <label class="opcion">
+              <input type="radio" name="pago"
+                value="Transferencia bancaria" />
+              <span>
+                <strong>Transferencia bancaria</strong>
+                <small>Te proporcionaremos los datos para realizar el pago.</small>
+              </span>
+            </label>
+          </div>
+        </section>
+
+        <div class="pedido-final">
+          <p>
+            Al continuar, se abrirá WhatsApp con el resumen de tu pedido
+            para que puedas enviarlo.
+          </p>
+
+          <button type="submit">
+            Enviar pedido por WhatsApp <span>↗</span>
+          </button>
+
+          <p id="mensaje" class="mensaje" aria-live="polite"></p>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  .pedido {
+    min-height: 100vh;
+    background: #08080B;
+    color: #fff;
+    padding: 110px 7% 100px;
+  }
+
+  .pedido-contenedor {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .pedido-titulo {
+    margin-bottom: 65px;
+  }
+
+  .eyebrow {
+    color: #A58AFF;
+    font-size: 11px;
+    letter-spacing: 3px;
+    font-weight: 700;
+  }
+
+  .pedido-titulo h1 {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: clamp(42px, 7vw, 76px);
+    line-height: 1.05;
+    letter-spacing: -3px;
+    margin: 18px 0;
+  }
+
+  .pedido-titulo h1 span {
+    color: #8055FF;
+  }
+
+  .pedido-titulo p {
+    color: #aaa;
+    font-size: 15px;
+  }
+
+  .bloque {
+    display: grid;
+    grid-template-columns: 65px 1fr;
+    gap: 15px;
+    padding: 35px 0;
+    border-top: 1px solid rgba(255,255,255,.12);
+  }
+
+  .numero {
+    color: #A58AFF;
+    font-size: 13px;
+    letter-spacing: 2px;
+    padding-top: 5px;
+  }
+
+  .bloque h2 {
+    font-size: 23px;
+    margin: 0 0 25px;
+    font-family: "Space Grotesk", sans-serif;
+  }
+
+  .producto-seleccionado {
+    background: #111117;
+    border: 1px solid rgba(255,255,255,.09);
+    padding: 25px;
+  }
+
+  .producto-seleccionado span {
+    color: #A58AFF;
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+
+  .producto-seleccionado h3 {
+    font-size: 23px;
+    margin-top: 12px;
+  }
+
+  .bloque-contenido > label:not(.opcion) {
+    display: block;
+    font-size: 13px;
+    color: #ddd;
+    margin: 20px 0 9px;
+  }
+
+  .bloque-contenido > input,
+  .bloque-contenido > textarea {
+    width: 100%;
+    padding: 16px;
+    background: #111117;
+    border: 1px solid rgba(255,255,255,.13);
+    color: white;
+    font: inherit;
+    font-size: 14px;
+    outline: none;
+    border-radius: 2px;
+    transition: border-color .2s;
+  }
+
+  .bloque-contenido > input:focus,
+  .bloque-contenido > textarea:focus {
+    border-color: #8055FF;
+  }
+
+  .bloque-contenido > input::placeholder,
+  .bloque-contenido > textarea::placeholder {
+    color: #777;
+  }
+
+  .bloque-contenido textarea {
+    resize: vertical;
+  }
+
+  .opcion {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 21px;
+    margin-bottom: 12px;
+    background: #111117;
+    border: 1px solid rgba(255,255,255,.10);
+    cursor: pointer;
+    transition: border-color .2s;
+  }
+
+  .opcion:has(input:checked) {
+    border-color: #8055FF;
+  }
+
+  .opcion input {
+    accent-color: #8055FF;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  .opcion span {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .opcion strong {
+    font-size: 14px;
+  }
+
+  .opcion small {
+    color: #aaa;
+    font-size: 12px;
+  }
+
+  .pedido-final {
+    border-top: 1px solid rgba(255,255,255,.12);
+    padding-top: 30px;
+  }
+
+  .pedido-final > p {
+    color: #aaa;
+    font-size: 13px;
+    line-height: 1.7;
+    margin-bottom: 22px;
+  }
+
+  .pedido-final button {
+    width: 100%;
+    padding: 19px;
+    background: #8055FF;
+    color: white;
+    border: none;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background .2s, transform .2s;
+  }
+
+  .pedido-final button:hover {
+    background: #A58AFF;
+    transform: translateY(-2px);
+  }
+
+  .pedido-final button span {
+    margin-left: 8px;
+    font-size: 17px;
+  }
+
+  .mensaje {
+    color: #A58AFF;
+    margin-top: 15px;
+    font-size: 13px;
+  }
+
+  :global(button:focus-visible),
+  :global(input:focus-visible),
+  :global(textarea:focus-visible) {
+    outline: 2px solid #A58AFF;
+    outline-offset: 3px;
+  }
+
+  @media (max-width: 600px) {
+    .pedido {
+      padding: 85px 6% 70px;
+    }
+
+    .pedido-titulo {
+      margin-bottom: 40px;
+    }
+
+    .pedido-titulo h1 {
+      letter-spacing: -2px;
+    }
+
+    .bloque {
+      grid-template-columns: 35px 1fr;
+      gap: 8px;
+      padding: 28px 0;
+    }
+
+    .bloque h2 {
+      font-size: 20px;
+    }
+
+    .producto-seleccionado {
+      padding: 19px;
+    }
+
+    .opcion {
+      padding: 17px;
+    }
+  }
+</style>
+
+<script>
+  const formulario = document.querySelector<HTMLFormElement>("#formPedido");
+  const mensaje = document.querySelector<HTMLParagraphElement>("#mensaje");
+
+  formulario?.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    if (!formulario.reportValidity()) return;
+
+    const datos = new FormData(formulario);
+
+    // WhatsApp oficial de JG.
+    const numeroWhatsApp = "593987181605";
+
+    // Obtener automáticamente el producto seleccionado.
+    const nombreProducto =
+      document.querySelector(".producto-seleccionado h3")?.textContent?.trim()
+      || "Producto JG";
+
+    // Preparar el resumen del pedido.
+    const resumen = [
+      "¡Hola! Quiero realizar un pedido de JG.",
+      "",
+      `Producto: ${nombreProducto}`,
+      `Nombre: ${datos.get("nombre")}`,
+      `Teléfono: ${datos.get("telefono")}`,
+      `Correo: ${datos.get("correo")}`,
+      `Ciudad: ${datos.get("ciudad")}`,
+      `Dirección: ${datos.get("direccion")}`,
+      `Referencia: ${datos.get("referencia") || "No especificada"}`,
+      `Método de pago: ${datos.get("pago")}`,
+    ].join("\n");
+
+    // Abrir WhatsApp con todos los datos.
+    const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(resumen)}`;
+
+    window.open(url, "_blank", "noopener,noreferrer");
+  });
+</script>

@@ -1,0 +1,46 @@
+﻿
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import Categoria from "../components/Categoria.astro";
+
+const productos = [
+  {
+    nombre: "Black Essential",
+    precio: 59,
+    tipo: "PULSERAS",
+    descripcion: "Sencillez con carácter.",
+    imagen: "/images/pulsera 1.jpeg"
+  },
+  {
+    nombre: "Golden Touch",
+    precio: 79,
+    tipo: "PULSERAS",
+    descripcion: "Un detalle elegante y moderno.",
+    imagen: "/images/pulsera 2.jpeg"
+  },
+  {
+    nombre: "La Snake",
+    precio: 89,
+    tipo: "PULSERAS",
+    descripcion: "Inspirada en el estilo urbano.",
+    imagen: "/images/pulsera 3.jpeg"
+  }
+];
+---
+
+<Layout title="Pulseras | JG">
+  <Header />
+
+  <main>
+    <Categoria
+      titulo="Pulseras"
+      descripcion="Complementos para completar tu presencia."
+      productos={productos}
+    />
+  </main>
+
+  <Footer />
+</Layout>
+

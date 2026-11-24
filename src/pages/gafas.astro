@@ -1,0 +1,46 @@
+﻿
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import Categoria from "../components/Categoria.astro";
+
+const productos = [
+  {
+    nombre: "Urban Black",
+    tipo: "GAFAS DE SOL",
+    precio: 129,
+    descripcion: "Diseño negro, moderno y versátil.",
+    imagen: "/images/gafas 1.jpeg"
+  },
+  {
+    nombre: "Classic Vision",
+    precio: 149,
+    tipo: "GAFAS DE SOL",
+    descripcion: "Un estilo clásico para cualquier ocasión.",
+    imagen: "/images/gafas 2.jpeg"
+  },
+  {
+    nombre: "Casimiro",
+    precio: 169,
+    tipo: "GAFAS DE SOL",
+    descripcion: "Personalidad y presencia en cada detalle.",
+    imagen: "/images/gafas 3.jpeg"
+  }
+];
+---
+
+<Layout title="Gafas | JG">
+  <Header />
+
+  <main>
+    <Categoria
+      titulo="Gafas"
+      descripcion="Encuentra el modelo que representa tu estilo."
+      productos={productos}
+    />
+  </main>
+
+  <Footer />
+</Layout>
+

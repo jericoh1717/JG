@@ -1,0 +1,44 @@
+﻿
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import Categoria from "../components/Categoria.astro";
+
+const productos = [
+  {
+    nombre: "Only Chain",
+    precio: 89,
+    tipo: "CADENAS",
+    descripcion: "No todo lo que brilla es dorado.",
+    imagen: "/images/cadena 1.jpeg"
+  },
+  {
+    nombre: "Silver Link",
+    precio: 109,
+    tipo: "CADENAS",
+    descripcion: "Diseño plateado y versátil.",
+    imagen: "/images/cadena 2.jpeg"
+  },
+  {
+    nombre: "Urban Necklace",
+    precio: 119,
+    tipo: "CADENAS",
+    descripcion: "Estilo urbano con personalidad.",
+    imagen: "/images/cadena 3.jpeg"
+  }
+];
+---
+
+<Layout title="Cadenas | JG">
+  <Header />
+  <main>
+    <Categoria
+      titulo="Cadenas"
+      descripcion="Detalles que expresan tu identidad."
+      productos={productos}
+    />
+  </main>
+  <Footer />
+</Layout>
+

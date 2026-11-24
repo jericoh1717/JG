@@ -1,0 +1,381 @@
+﻿---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+---
+
+<Layout>
+  <Header />
+
+  <main class="pagina-carrito">
+    <div class="carrito-contenedor">
+      <span class="etiqueta">JG · TU SELECCIÓN</span>
+      <h1>MI CARRITO<span>.</span></h1>
+      <p class="subtitulo">Los productos que elegiste están aquí.</p>
+
+      <div id="lista-carrito"></div>
+
+      <div id="resumen-carrito" class="resumen" hidden>
+        <div class="resumen-linea">
+          <span>UNIDADES</span>
+          <strong id="total-productos">0</strong>
+        </div>
+        <div class="resumen-linea">
+          <span>TOTAL DE TU COMPRA</span>
+          <strong id="total-precio">$0.00</strong>
+        </div>
+        <button id="vaciar-carrito" class="vaciar" type="button">
+          VACIAR CARRITO
+        </button>
+        <a href="/pedido" class="continuar">
+          CONTINUAR CON MI PEDIDO <span>→</span>
+        </a>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  import {
+    obtenerCarrito,
+    cambiarCantidad,
+    eliminarDelCarrito,
+    vaciarCarrito
+  } from "../scripts/carrito.js";
+
+  const lista = document.querySelector("#lista-carrito");
+  const resumen = document.querySelector("#resumen-carrito");
+  const total = document.querySelector("#total-productos");
+  const totalPrecio = document.querySelector("#total-precio");
+
+  function renderizarCarrito() {
+    if (!lista || !resumen || !total || !totalPrecio) return;
+
+    const productos = obtenerCarrito();
+
+    lista.innerHTML = "";
+
+    const cantidadTotal = productos.reduce(
+      (suma, producto) => suma + (Number(producto.cantidad) || 1),
+      0
+    );
+
+    total.textContent = cantidadTotal;
+    const importeTotal = productos.reduce((suma, producto) => suma + producto.precio * producto.cantidad, 0);
+    totalPrecio.textContent = importeTotal.toLocaleString("en-US", { style: "currency", currency: "USD" });
+    resumen.hidden = productos.length === 0;
+
+    if (productos.length === 0) {
+      const vacio = document.createElement("div");
+      vacio.className = "carrito-vacio";
+      vacio.innerHTML = `
+        <div class="icono-vacio">🛒</div>
+        <h2>TU CARRITO ESTÁ VACÍO</h2>
+        <p>Descubre nuestra colección y encuentra tu próximo favorito.</p>
+        <a href="/coleccion">EXPLORAR COLECCIÓN →</a>
+      `;
+      lista.appendChild(vacio);
+      return;
+    }
+
+    productos.forEach((producto) => {
+      const articulo = document.createElement("article");
+      articulo.className = "producto-carrito";
+
+      const imagen = document.createElement("img");
+      imagen.src = producto.imagen || "";
+      imagen.alt = producto.nombre || "Producto JG";
+
+      const informacion = document.createElement("div");
+      informacion.className = "producto-datos";
+
+      const tipo = document.createElement("span");
+      tipo.className = "producto-tipo";
+      tipo.textContent = producto.tipo || "JG COLLECTION";
+
+      const nombre = document.createElement("h2");
+      nombre.textContent = producto.nombre || "Producto";
+
+      const descripcion = document.createElement("p");
+      descripcion.textContent = producto.descripcion || "";
+
+      const precio = document.createElement("p");
+      precio.className = "precio-unitario";
+      precio.textContent = `Precio: ${Number(producto.precio).toLocaleString("en-US", { style: "currency", currency: "USD" })}`;
+      const subtotal = document.createElement("strong");
+      subtotal.className = "subtotal-producto";
+      subtotal.textContent = `Subtotal: ${(Number(producto.precio) * (Number(producto.cantidad) || 1)).toLocaleString("en-US", { style: "currency", currency: "USD" })}`;
+      informacion.append(tipo, nombre, descripcion, precio, subtotal);
+
+      const controles = document.createElement("div");
+      controles.className = "controles-cantidad";
+
+      const menos = document.createElement("button");
+      menos.textContent = "−";
+      menos.type = "button";
+      menos.setAttribute("aria-label", "Reducir cantidad");
+
+      const cantidad = document.createElement("strong");
+      cantidad.textContent = producto.cantidad || 1;
+
+      const mas = document.createElement("button");
+      mas.textContent = "+";
+      mas.type = "button";
+      mas.setAttribute("aria-label", "Aumentar cantidad");
+
+      menos.addEventListener("click", () => {
+        cambiarCantidad(producto.id, Math.max(1, (Number(producto.cantidad) || 1) - 1));
+        renderizarCarrito();
+      });
+
+      mas.addEventListener("click", () => {
+        cambiarCantidad(producto.id, (Number(producto.cantidad) || 1) + 1);
+        renderizarCarrito();
+      });
+
+      controles.append(menos, cantidad, mas);
+
+      const eliminar = document.createElement("button");
+      eliminar.className = "eliminar";
+      eliminar.type = "button";
+      eliminar.textContent = "ELIMINAR";
+      eliminar.addEventListener("click", () => {
+        eliminarDelCarrito(producto.id);
+        renderizarCarrito();
+      });
+
+      const acciones = document.createElement("div");
+      acciones.className = "acciones-carrito";
+      acciones.append(controles, eliminar);
+
+      articulo.append(imagen, informacion, acciones);
+      lista.appendChild(articulo);
+    });
+  }
+
+  document.querySelector("#vaciar-carrito")?.addEventListener("click", () => {
+    vaciarCarrito();
+    renderizarCarrito();
+  });
+
+  window.addEventListener("jg-carrito-actualizado", renderizarCarrito);
+
+  renderizarCarrito();
+</script>
+
+<style>
+  .pagina-carrito {
+    min-height: 80vh;
+    background: #08080B;
+    color: white;
+    padding: 100px 6%;
+  }
+
+  .carrito-contenedor {
+    max-width: 1100px;
+    margin: auto;
+  }
+
+  .etiqueta {
+    color: #A58AFF;
+    font-size: 11px;
+    letter-spacing: 4px;
+    font-weight: 700;
+  }
+
+  .carrito-contenedor h1 {
+    font-size: clamp(42px, 7vw, 76px);
+    letter-spacing: -3px;
+    margin: 18px 0 8px;
+  }
+
+  .carrito-contenedor h1 span {
+    color: #8055FF;
+  }
+
+  .subtitulo {
+    color: #999;
+    margin-bottom: 45px;
+  }
+
+  .carrito-vacio {
+    padding: 65px 20px;
+    text-align: center;
+    background: #111117;
+    border: 1px solid #25232D;
+  }
+
+  .icono-vacio {
+    font-size: 42px;
+    margin-bottom: 20px;
+  }
+
+  .carrito-vacio h2 {
+    font-size: 20px;
+  }
+
+  .carrito-vacio p {
+    color: #999;
+    margin: 15px 0 25px;
+  }
+
+  .carrito-vacio a,
+  .continuar {
+    display: inline-flex;
+    text-decoration: none;
+    color: white;
+    background: #8055FF;
+    padding: 16px 22px;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+  }
+
+  .producto-carrito {
+    display: grid;
+    grid-template-columns: 115px 1fr auto;
+    align-items: center;
+    gap: 25px;
+    padding: 22px;
+    margin-bottom: 15px;
+    background: #111117;
+    border: 1px solid #25232D;
+  }
+
+  .producto-carrito > img {
+    width: 115px;
+    height: 130px;
+    object-fit: cover;
+    background: #1b1b22;
+  }
+
+  .producto-tipo {
+    color: #A58AFF;
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+
+  .producto-datos h2 {
+    margin: 9px 0;
+    font-size: 20px;
+  }
+
+  .producto-datos .precio-unitario {
+    color: #A58AFF;
+    font-weight: 700;
+    margin-top: 14px;
+  }
+
+  .subtotal-producto {
+    display: block;
+    color: white;
+    font-size: 14px;
+    margin-top: 8px;
+  }
+
+  .producto-datos p {
+    color: #999;
+    font-size: 13px;
+  }
+
+  .acciones-carrito {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .controles-cantidad {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .controles-cantidad button {
+    width: 32px;
+    height: 32px;
+    color: white;
+    background: #24202F;
+    border: 1px solid #8055FF;
+    cursor: pointer;
+    font-size: 18px;
+  }
+
+  .controles-cantidad strong {
+    min-width: 15px;
+    text-align: center;
+  }
+
+  .eliminar {
+    background: none;
+    border: 0;
+    color: #A58AFF;
+    font-size: 10px;
+    letter-spacing: 1px;
+    cursor: pointer;
+  }
+
+  .resumen {
+    margin-top: 35px;
+    padding: 25px;
+    background: #111117;
+    border: 1px solid #302D39;
+  }
+
+  .resumen-linea {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    font-size: 13px;
+    letter-spacing: 2px;
+  }
+
+  .resumen-linea strong {
+    color: #A58AFF;
+  }
+
+  .vaciar {
+    display: block;
+    margin-bottom: 20px;
+    padding: 0;
+    background: none;
+    border: 0;
+    color: #999;
+    font-size: 10px;
+    letter-spacing: 2px;
+    cursor: pointer;
+  }
+
+  .continuar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  @media (max-width: 650px) {
+    .pagina-carrito {
+      padding: 75px 5%;
+    }
+
+    .producto-carrito {
+      grid-template-columns: 85px 1fr;
+      gap: 15px;
+      padding: 15px;
+    }
+
+    .producto-carrito > img {
+      width: 85px;
+      height: 105px;
+    }
+
+    .producto-datos h2 {
+      font-size: 16px;
+    }
+
+    .acciones-carrito {
+      grid-column: 1 / -1;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+</style>
+
